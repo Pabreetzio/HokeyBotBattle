@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>WinUSBNet</id>
+    <version>1.0</version>
+    <title>WinUSBNet</title>
+    <authors>MadWizard</authors>
+    <owners>MadWizard</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://code.google.com/p/winusbnet/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WinUSBNet is a .NET class library that provides easy access to the WinUSB API from C#, VB.NET and other .NET languages. WinUSB is a user mode API available for Windows XP, Vista and 7 (XP will require</description>
+    <summary>A wrapper WinUSB for connecting to a USB device</summary>
+    <releaseNotes />
+    <copyright />
+    <language />
+  </metadata>
+</package>

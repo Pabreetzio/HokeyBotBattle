@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BotInteraction.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BotInteractionStoreContainer">
+    <EntitySet Name="BotActions" EntityType="BotInteraction.Store.BotActions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ControllerCommands" EntityType="BotInteraction.Store.ControllerCommands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ControllerLayouts" EntityType="BotInteraction.Store.ControllerLayouts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ActionCommands" EntityType="BotInteraction.Store.ActionCommands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SerialCommands" EntityType="BotInteraction.Store.SerialCommands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BotActionSerialCommands" EntityType="BotInteraction.Store.BotActionSerialCommands" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="BotActionActionCommand" Association="BotInteraction.Store.BotActionActionCommand">
+      <End Role="BotAction" EntitySet="BotActions" />
+      <End Role="ActionCommand" EntitySet="ActionCommands" />
+    </AssociationSet>
+    <AssociationSet Name="ControllerCommandActionCommand" Association="BotInteraction.Store.ControllerCommandActionCommand">
+      <End Role="ControllerCommand" EntitySet="ControllerCommands" />
+      <End Role="ActionCommand" EntitySet="ActionCommands" />
+    </AssociationSet>
+    <AssociationSet Name="ControllerLayoutActionCommand" Association="BotInteraction.Store.ControllerLayoutActionCommand">
+      <End Role="ControllerLayout" EntitySet="ControllerLayouts" />
+      <End Role="ActionCommand" EntitySet="ActionCommands" />
+    </AssociationSet>
+    <AssociationSet Name="BotActionBotActionSerialCommand" Association="BotInteraction.Store.BotActionBotActionSerialCommand">
+      <End Role="BotAction" EntitySet="BotActions" />
+      <End Role="BotActionSerialCommand" EntitySet="BotActionSerialCommands" />
+    </AssociationSet>
+    <AssociationSet Name="SerialCommandBotActionSerialCommand" Association="BotInteraction.Store.SerialCommandBotActionSerialCommand">
+      <End Role="SerialCommand" EntitySet="SerialCommands" />
+      <End Role="BotActionSerialCommand" EntitySet="BotActionSerialCommands" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="BotActions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ControllerCommands">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="ControllerLayouts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ActionCommands">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BotActionId" Type="int" Nullable="false" />
+    <Property Name="ControllerCommandId" Type="int" Nullable="false" />
+    <Property Name="ControllerLayoutId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SerialCommands">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="BotActionSerialCommands">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BotActionId" Type="int" Nullable="false" />
+    <Property Name="SerialCommandId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="BotActionActionCommand">
+    <End Role="BotAction" Type="BotInteraction.Store.BotActions" Multiplicity="1" />
+    <End Role="ActionCommand" Type="BotInteraction.Store.ActionCommands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BotAction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActionCommand">
+        <PropertyRef Name="BotActionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControllerCommandActionCommand">
+    <End Role="ControllerCommand" Type="BotInteraction.Store.ControllerCommands" Multiplicity="1" />
+    <End Role="ActionCommand" Type="BotInteraction.Store.ActionCommands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControllerCommand">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActionCommand">
+        <PropertyRef Name="ControllerCommandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControllerLayoutActionCommand">
+    <End Role="ControllerLayout" Type="BotInteraction.Store.ControllerLayouts" Multiplicity="1" />
+    <End Role="ActionCommand" Type="BotInteraction.Store.ActionCommands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControllerLayout">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ActionCommand">
+        <PropertyRef Name="ControllerLayoutId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BotActionBotActionSerialCommand">
+    <End Role="BotAction" Type="BotInteraction.Store.BotActions" Multiplicity="1" />
+    <End Role="BotActionSerialCommand" Type="BotInteraction.Store.BotActionSerialCommands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BotAction">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BotActionSerialCommand">
+        <PropertyRef Name="BotActionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SerialCommandBotActionSerialCommand">
+    <End Role="SerialCommand" Type="BotInteraction.Store.SerialCommands" Multiplicity="1" />
+    <End Role="BotActionSerialCommand" Type="BotInteraction.Store.BotActionSerialCommands" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SerialCommand">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BotActionSerialCommand">
+        <PropertyRef Name="SerialCommandId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BotInteraction" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="BotInteractionContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BotActions" EntityType="BotInteraction.BotAction" />
+          <EntitySet Name="ControllerCommands" EntityType="BotInteraction.ControllerCommand" />
+          <EntitySet Name="ControllerLayouts" EntityType="BotInteraction.ControllerLayout" />
+          <EntitySet Name="ActionCommands" EntityType="BotInteraction.ActionCommand" />
+          <AssociationSet Name="BotActionActionCommand" Association="BotInteraction.BotActionActionCommand">
+            <End Role="BotAction" EntitySet="BotActions" />
+            <End Role="ActionCommand" EntitySet="ActionCommands" />
+          </AssociationSet>
+          <AssociationSet Name="ControllerCommandActionCommand" Association="BotInteraction.ControllerCommandActionCommand">
+            <End Role="ControllerCommand" EntitySet="ControllerCommands" />
+            <End Role="ActionCommand" EntitySet="ActionCommands" />
+          </AssociationSet>
+          <AssociationSet Name="ControllerLayoutActionCommand" Association="BotInteraction.ControllerLayoutActionCommand">
+            <End Role="ControllerLayout" EntitySet="ControllerLayouts" />
+            <End Role="ActionCommand" EntitySet="ActionCommands" />
+          </AssociationSet>
+          <EntitySet Name="SerialCommands" EntityType="BotInteraction.SerialCommand" />
+          <EntitySet Name="BotActionSerialCommands" EntityType="BotInteraction.BotActionSerialCommand" />
+          <AssociationSet Name="BotActionBotActionSerialCommand" Association="BotInteraction.BotActionBotActionSerialCommand">
+            <End Role="BotAction" EntitySet="BotActions" />
+            <End Role="BotActionSerialCommand" EntitySet="BotActionSerialCommands" />
+          </AssociationSet>
+          <AssociationSet Name="SerialCommandBotActionSerialCommand" Association="BotInteraction.SerialCommandBotActionSerialCommand">
+            <End Role="SerialCommand" EntitySet="SerialCommands" />
+            <End Role="BotActionSerialCommand" EntitySet="BotActionSerialCommands" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BotAction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="Value" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ActionCommands" Relationship="BotInteraction.BotActionActionCommand" FromRole="BotAction" ToRole="ActionCommand" />
+          <NavigationProperty Name="BotActionSerialCommands" Relationship="BotInteraction.BotActionBotActionSerialCommand" FromRole="BotAction" ToRole="BotActionSerialCommand" />
+        </EntityType>
+        <EntityType Name="ControllerCommand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="Value" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ActionCommands" Relationship="BotInteraction.ControllerCommandActionCommand" FromRole="ControllerCommand" ToRole="ActionCommand" />
+        </EntityType>
+        <EntityType Name="ControllerLayout">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ActionCommands" Relationship="BotInteraction.ControllerLayoutActionCommand" FromRole="ControllerLayout" ToRole="ActionCommand" />
+        </EntityType>
+        <EntityType Name="ActionCommand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="BotAction" Relationship="BotInteraction.BotActionActionCommand" FromRole="ActionCommand" ToRole="BotAction" />
+          <Property Type="Int32" Name="BotActionId" Nullable="false" />
+          <NavigationProperty Name="ControllerCommand" Relationship="BotInteraction.ControllerCommandActionCommand" FromRole="ActionCommand" ToRole="ControllerCommand" />
+          <Property Type="Int32" Name="ControllerCommandId" Nullable="false" />
+          <NavigationProperty Name="ControllerLayout" Relationship="BotInteraction.ControllerLayoutActionCommand" FromRole="ActionCommand" ToRole="ControllerLayout" />
+          <Property Type="Int32" Name="ControllerLayoutId" Nullable="false" />
+        </EntityType>
+        <Association Name="BotActionActionCommand">
+          <End Type="BotInteraction.BotAction" Role="BotAction" Multiplicity="1" />
+          <End Type="BotInteraction.ActionCommand" Role="ActionCommand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BotAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionCommand">
+              <PropertyRef Name="BotActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ControllerCommandActionCommand">
+          <End Type="BotInteraction.ControllerCommand" Role="ControllerCommand" Multiplicity="1" />
+          <End Type="BotInteraction.ActionCommand" Role="ActionCommand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ControllerCommand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionCommand">
+              <PropertyRef Name="ControllerCommandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ControllerLayoutActionCommand">
+          <End Type="BotInteraction.ControllerLayout" Role="ControllerLayout" Multiplicity="1" />
+          <End Type="BotInteraction.ActionCommand" Role="ActionCommand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ControllerLayout">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActionCommand">
+              <PropertyRef Name="ControllerLayoutId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SerialCommand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="true" />
+          <NavigationProperty Name="BotActionSerialCommands" Relationship="BotInteraction.SerialCommandBotActionSerialCommand" FromRole="SerialCommand" ToRole="BotActionSerialCommand" />
+        </EntityType>
+        <EntityType Name="BotActionSerialCommand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="BotAction" Relationship="BotInteraction.BotActionBotActionSerialCommand" FromRole="BotActionSerialCommand" ToRole="BotAction" />
+          <Property Type="Int32" Name="BotActionId" Nullable="false" />
+          <NavigationProperty Name="SerialCommand" Relationship="BotInteraction.SerialCommandBotActionSerialCommand" FromRole="BotActionSerialCommand" ToRole="SerialCommand" />
+          <Property Type="Int32" Name="SerialCommandId" Nullable="false" />
+        </EntityType>
+        <Association Name="BotActionBotActionSerialCommand">
+          <End Type="BotInteraction.BotAction" Role="BotAction" Multiplicity="1" />
+          <End Type="BotInteraction.BotActionSerialCommand" Role="BotActionSerialCommand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BotAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BotActionSerialCommand">
+              <PropertyRef Name="BotActionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SerialCommandBotActionSerialCommand">
+          <End Type="BotInteraction.SerialCommand" Role="SerialCommand" Multiplicity="1" />
+          <End Type="BotInteraction.BotActionSerialCommand" Role="BotActionSerialCommand" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SerialCommand">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BotActionSerialCommand">
+              <PropertyRef Name="SerialCommandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BotInteractionStoreContainer" CdmEntityContainer="BotInteractionContainer">
+    <EntitySetMapping Name="BotActions">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.BotAction)">
+        <MappingFragment StoreEntitySet="BotActions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ControllerCommands">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.ControllerCommand)">
+        <MappingFragment StoreEntitySet="ControllerCommands">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ControllerLayouts">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.ControllerLayout)">
+        <MappingFragment StoreEntitySet="ControllerLayouts">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActionCommands">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.ActionCommand)">
+        <MappingFragment StoreEntitySet="ActionCommands">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BotActionId" ColumnName="BotActionId" />
+          <ScalarProperty Name="ControllerCommandId" ColumnName="ControllerCommandId" />
+          <ScalarProperty Name="ControllerLayoutId" ColumnName="ControllerLayoutId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SerialCommands">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.SerialCommand)">
+        <MappingFragment StoreEntitySet="SerialCommands">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BotActionSerialCommands">
+      <EntityTypeMapping TypeName="IsTypeOf(BotInteraction.BotActionSerialCommand)">
+        <MappingFragment StoreEntitySet="BotActionSerialCommands">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BotActionId" ColumnName="BotActionId" />
+          <ScalarProperty Name="SerialCommandId" ColumnName="SerialCommandId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
