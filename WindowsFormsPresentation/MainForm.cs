@@ -33,10 +33,6 @@ namespace WindowsFormsPresentation
                 .Select(p => new ListViewItem(p))
                 .ToArray()
             );
-            using (var db = new BotInteractionContainer())
-            {
-                Controller1LayoutComboBox.Items.AddRange(db.ControllerLayouts.Select(cl=>cl.Name).ToArray());
-            }
             _Connected = false;
             _Last10Messages = new List<string>() { "Hello World" };
 
@@ -62,46 +58,6 @@ namespace WindowsFormsPresentation
             }
         }
 
-        byte[] _ConvertPercentToBytes(float percent)
-        {
-            byte byteOne = (byte)0x00;
-            byte byteTwo = (byte)0x00;
-            int zeroOneOffset = 72;
-            int oneTwoOffset = 56;
-            int ofOneHundred = (int)(percent * 100);
-            if (ofOneHundred > 55)
-            {
-                byteOne = (byte)0x02;
-                byteTwo = (byte)(ofOneHundred-oneTwoOffset);
-            }
-            else {
-                if (ofOneHundred < -zeroOneOffset)
-                {
-                    byteOne = (byte)0x00;
-                    byteTwo = (byte)(ofOneHundred + zeroOneOffset-128);
-                }
-                else
-                {
-                    byteOne = (byte)0x01;
-                    byteTwo = (byte)(ofOneHundred + zeroOneOffset);
-                }
-            }
-            return new byte[2]{byteOne, byteTwo};
-        }
-        byte[] _GetSerialCommand(Vector2 botVector)
-        {
-            byte startByte = (byte)0x02; 
-            byte endByte = (byte)0x03;
-            byte[] xBytes = _ConvertPercentToBytes(botVector.X);
-            byte[] yBytes = _ConvertPercentToBytes(botVector.Y);
-            byte[] serialBytes = new byte[6]{startByte, xBytes[0], xBytes[1], yBytes[0], yBytes[1],endByte};
-            return serialBytes;
-        }
-
-        string _getSerialCommandToString(byte[] serialBytes){
-            return String.Join(" ", serialBytes.Select(b => b.ToString("X2")));
-        }
-
         void ProcessGamepadState(object sender, EventArgs e)
         {
             GamePadState currentState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
@@ -110,8 +66,8 @@ namespace WindowsFormsPresentation
                 Vector2 botVector = currentState.ThumbSticks.Left;
                 if (botVector != _PreviousBotVector)
                 {
-                    byte[] message = _GetSerialCommand(botVector);
-                    string fakeSerialMessage = _getSerialCommandToString(message); 
+                    byte[] message = JoySerial.GetSerialCommand(botVector.X, botVector.Y);
+                    string fakeSerialMessage = JoySerial.GetSerialCommandToString(message); 
                     SendMessageToTextBox(fakeSerialMessage);
                     sendRealSerialMessage(message);
                 }
